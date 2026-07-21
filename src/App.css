@@ -417,3 +417,32 @@ body {
   color: #64748b;
   font-size: 0.85rem;
 }
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.stat-card {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 18px 10px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-number {
+  color: #f59e0b;
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.stat-label {
+  color: #94a3b8;
+  font-size: 0.75rem;
+}

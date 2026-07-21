@@ -3,17 +3,42 @@ import { supabase } from '../lib/supabase'
 
 function Admin() {
   const [demandes, setDemandes] = useState([])
+  const [stats, setStats] = useState({ visites: 0, demandes: 0, nouvelles: 0 })
 
   useEffect(() => {
-    async function loadDemandes() {
-      const { data } = await supabase
+    async function loadData() {
+      const { data: demandesData } = await supabase
         .from('demandes')
         .select('*, clients(nom, telephone)')
         .order('created_at', { ascending: false })
-      if (data) setDemandes(data)
+      if (demandesData) setDemandes(demandesData)
+
+      const { count: visitesCount } = await supabase
+        .from('visites')
+        .select('*', { count: 'exact', head: true })
+
+      const { count: demandesCount } = await supabase
+        .from('demandes')
+        .select('*', { count: 'exact', head: true })
+
+      const { count: nouvellesCount } = await supabase
+        .from('demandes')
+        .select('*', { count: 'exact', head: true })
+        .eq('statut', 'nouvelle')
+
+      setStats({
+        visites: visitesCount || 0,
+        demandes: demandesCount || 0,
+        nouvelles: nouvellesCount || 0
+      })
     }
-    loadDemandes()
+    loadData()
   }, [])
+
+  async function updateStatut(id, nouveauStatut) {
+    await supabase.from('demandes').update({ statut: nouveauStatut }).eq('id', id)
+    setDemandes(demandes.map(d => d.id === id ? { ...d, statut: nouveauStatut } : d))
+  }
 
   async function handleLogout() {
     await supabase.auth.signOut()
@@ -27,6 +52,21 @@ function Admin() {
         <button onClick={handleLogout}>Déconnexion</button>
       </header>
 
+      <div className="stats-grid">
+        <div className="stat-card">
+          <span className="stat-number">{stats.visites}</span>
+          <span className="stat-label">Visites du site</span>
+        </div>
+        <div className="stat-card">
+          <span className="stat-number">{stats.demandes}</span>
+          <span className="stat-label">Demandes totales</span>
+        </div>
+        <div className="stat-card">
+          <span className="stat-number">{stats.nouvelles}</span>
+          <span className="stat-label">Nouvelles demandes</span>
+        </div>
+      </div>
+
       <section>
         <h2>Demandes clients ({demandes.length})</h2>
         <div className="demandes-list">
@@ -36,6 +76,10 @@ function Admin() {
               <p>{d.service_demande}</p>
               <p>{d.description}</p>
               <span className={`statut ${d.statut}`}>{d.statut}</span>
+              <div className="statut-actions">
+                <button onClick={() => updateStatut(d.id, 'vue')}>Marquer vue</button>
+                <button onClick={() => updateStatut(d.id, 'devis_envoye')}>Devis envoyé</button>
+              </div>
             </div>
           ))}
         </div>

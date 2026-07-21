@@ -13,6 +13,7 @@ function Home() {
       if (data) setServices(data)
     }
     loadServices()
+    supabase.from('visites').insert([{ page: 'accueil' }])
   }, [])
 
   async function handleSubmit(e) {
