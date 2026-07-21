@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
 
 function Home() {
@@ -34,10 +35,40 @@ function Home() {
 
   return (
     <div className="App">
-      <header className="header">
-        <h1>Le Doyen des Électriciens</h1>
-        <p>Votre électricien de confiance</p>
+      <nav className="navbar">
+        <span className="navbar-logo">Le Doyen des Électriciens</span>
+        <Link to="/login" className="navbar-login">Connexion</Link>
+      </nav>
+
+      <header className="hero">
+        <div className="hero-overlay">
+          <h1>Le Doyen des Électriciens</h1>
+          <p>Votre électricien de confiance, disponible pour tous vos besoins</p>
+          <a href="#demande" className="hero-cta">Demander un devis gratuit</a>
+        </div>
       </header>
+
+      <section className="pourquoi">
+        <h2>Pourquoi nous choisir</h2>
+        <div className="pourquoi-list">
+          <div className="pourquoi-card">
+            <h3>Expérience</h3>
+            <p>Des années d'expertise en installation et dépannage électrique.</p>
+          </div>
+          <div className="pourquoi-card">
+            <h3>Réactivité</h3>
+            <p>Intervention rapide, y compris en urgence.</p>
+          </div>
+          <div className="pourquoi-card">
+            <h3>Sécurité</h3>
+            <p>Travaux conformes aux normes électriques en vigueur.</p>
+          </div>
+          <div className="pourquoi-card">
+            <h3>Transparence</h3>
+            <p>Devis clair avant toute intervention, sans mauvaise surprise.</p>
+          </div>
+        </div>
+      </section>
 
       <section className="services">
         <h2>Nos services</h2>
@@ -52,7 +83,25 @@ function Home() {
         </div>
       </section>
 
-      <section className="demande">
+      <section className="temoignages">
+        <h2>Ce que disent nos clients</h2>
+        <div className="temoignages-list">
+          <div className="temoignage-card">
+            <p>"Intervention rapide et travail soigné. Je recommande vivement."</p>
+            <span>— Client satisfait</span>
+          </div>
+          <div className="temoignage-card">
+            <p>"Très professionnel, explications claires et prix honnête."</p>
+            <span>— Client satisfait</span>
+          </div>
+          <div className="temoignage-card">
+            <p>"Toujours disponible, même pour les urgences le soir."</p>
+            <span>— Client satisfait</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="demande" id="demande">
         <h2>Demander un service</h2>
         {envoye ? (
           <p>Merci ! Votre demande a été envoyée, nous vous contactons rapidement.</p>
@@ -70,6 +119,10 @@ function Home() {
           </form>
         )}
       </section>
+
+      <footer className="footer">
+        <p>Le Doyen des Électriciens — Votre électricien de confiance</p>
+      </footer>
 
       <a href="https://wa.me/22898958902" className="whatsapp-btn" target="_blank" rel="noopener noreferrer">
         Contacter sur WhatsApp

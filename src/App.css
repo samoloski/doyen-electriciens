@@ -289,3 +289,131 @@ body {
   cursor: pointer;
   flex: 1;
 }
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #0f172a;
+  border-bottom: 1px solid #334155;
+}
+
+.navbar-logo {
+  color: #f59e0b;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.navbar-login {
+  color: #e2e8f0;
+  text-decoration: none;
+  background: #334155;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+
+/* Hero */
+.hero {
+  background: linear-gradient(135deg, rgba(15,23,42,0.85), rgba(30,58,95,0.85)),
+    url('https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=1200&q=80') center/cover;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.hero h1 {
+  color: white;
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.hero p {
+  color: #cbd5e1;
+  margin-bottom: 24px;
+}
+
+.hero-cta {
+  display: inline-block;
+  background: #f59e0b;
+  color: #0f172a;
+  text-decoration: none;
+  padding: 14px 28px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+/* Pourquoi nous choisir */
+.pourquoi {
+  padding: 40px 20px;
+}
+
+.pourquoi h2, .temoignages h2 {
+  text-align: center;
+  color: #f59e0b;
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+}
+
+.pourquoi-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.pourquoi-card {
+  background: #1e293b;
+  border-radius: 12px;
+  padding: 16px;
+  text-align: center;
+}
+
+.pourquoi-card h3 {
+  color: white;
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.pourquoi-card p {
+  color: #94a3b8;
+  font-size: 0.85rem;
+}
+
+/* Temoignages */
+.temoignages {
+  padding: 40px 20px;
+  background: #1e293b;
+}
+
+.temoignages-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.temoignage-card {
+  background: #0f172a;
+  border-left: 3px solid #f59e0b;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.temoignage-card p {
+  color: #cbd5e1;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.temoignage-card span {
+  color: #f59e0b;
+  font-size: 0.85rem;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 24px 20px 100px;
+  color: #64748b;
+  font-size: 0.85rem;
+}
