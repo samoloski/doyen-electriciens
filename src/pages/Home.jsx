@@ -8,6 +8,8 @@ function Home() {
   const [selected, setSelected] = useState(null)
   const [form, setForm] = useState({ nom: '', telephone: '', service_demande: '', description: '' })
   const [envoye, setEnvoye] = useState(false)
+  const [installPrompt, setInstallPrompt] = useState(null)
+  const [installe, setInstalle] = useState(false)
 
   useEffect(() => {
     async function loadServices() {
@@ -16,7 +18,32 @@ function Home() {
     }
     loadServices()
     supabase.from('visites').insert([{ page: 'accueil' }])
+
+    function handleBeforeInstall(e) {
+      e.preventDefault()
+      setInstallPrompt(e)
+    }
+    window.addEventListener('beforeinstallprompt', handleBeforeInstall)
+
+    function handleInstalled() {
+      setInstalle(true)
+      setInstallPrompt(null)
+    }
+    window.addEventListener('appinstalled', handleInstalled)
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstall)
+      window.removeEventListener('appinstalled', handleInstalled)
+    }
   }, [])
+
+  async function handleInstall() {
+    if (!installPrompt) return
+    installPrompt.prompt()
+    const { outcome } = await installPrompt.userChoice
+    if (outcome === 'accepted') setInstalle(true)
+    setInstallPrompt(null)
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -65,6 +92,14 @@ function Home() {
           <h1>Le Doyen des Électriciens</h1>
           <p>Votre électricien de confiance, disponible pour tous vos besoins</p>
           <a href="#demande" className="hero-cta">Demander un devis gratuit</a>
+          {installPrompt && !installe && (
+            <button className="install-cta" onClick={handleInstall}>
+              📲 Télécharger l'application
+            </button>
+          )}
+          {installe && (
+            <p className="install-success">✓ Application installée</p>
+          )}
         </div>
       </header>
 
