@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { supabase } from '../lib/supabase'
+import emailjs from '@emailjs/browser'
 
 function Home() {
   const [services, setServices] = useState([])
@@ -30,6 +31,14 @@ function Home() {
         service_demande: form.service_demande,
         description: form.description
       }])
+
+      emailjs.send('service_skbjrjt', 'template_dgevok9', {
+        nom: form.nom,
+        telephone: form.telephone,
+        service: form.service_demande,
+        description: form.description
+      }, '00y-w1SlxV9N0AEvh')
+
       setEnvoye(true)
     }
   }
