@@ -5,6 +5,7 @@ import emailjs from '@emailjs/browser'
 
 function Home() {
   const [services, setServices] = useState([])
+  const [selected, setSelected] = useState(null)
   const [form, setForm] = useState({ nom: '', telephone: '', service_demande: '', description: '' })
   const [envoye, setEnvoye] = useState(false)
 
@@ -41,6 +42,12 @@ function Home() {
 
       setEnvoye(true)
     }
+  }
+
+  function demanderCeService(nomService) {
+    setForm({ ...form, service_demande: nomService })
+    setSelected(null)
+    document.getElementById('demande').scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
@@ -84,7 +91,8 @@ function Home() {
         <h2>Nos services</h2>
         <div className="services-list">
           {services.map(s => (
-            <div key={s.id} className="service-card">
+            <div key={s.id} className="service-card" onClick={() => setSelected(s)}>
+              {s.image_url && <img src={s.image_url} alt={s.nom} className="service-image" />}
               <h3>{s.nom}</h3>
               <p>{s.description}</p>
               <span>Sur devis</span>
@@ -137,6 +145,21 @@ function Home() {
       <a href="https://wa.me/22898958902" className="whatsapp-btn" target="_blank" rel="noopener noreferrer">
         Contacter sur WhatsApp
       </a>
+
+      {selected && (
+        <div className="modal-overlay" onClick={() => setSelected(null)}>
+          <div className="modal-content" onClick={e => e.stopPropagation()}>
+            <button className="modal-close" onClick={() => setSelected(null)}>×</button>
+            {selected.image_url && <img src={selected.image_url} alt={selected.nom} className="modal-image" />}
+            <h2>{selected.nom}</h2>
+            <p>{selected.description}</p>
+            <span className="modal-prix">Sur devis</span>
+            <button className="modal-cta" onClick={() => demanderCeService(selected.nom)}>
+              Demander ce service
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
