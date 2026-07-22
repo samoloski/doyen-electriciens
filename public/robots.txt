@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://doyen-electriciens.pages.dev/sitemap.xml

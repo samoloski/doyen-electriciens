@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '../lib/supabase'
+import jsPDF from 'jspdf'
 
 function Admin() {
   const [demandes, setDemandes] = useState([])
@@ -43,16 +44,13 @@ function Admin() {
         setRepartition(repartitionArr)
       }
 
-      const { data: visitesData } = await supabase
-        .from('visites').select('created_at')
-
+      const { data: visitesData } = await supabase.from('visites').select('created_at')
       const jours = []
       for (let i = 6; i >= 0; i--) {
         const d = new Date()
         d.setDate(d.getDate() - i)
         jours.push(d.toISOString().split('T')[0])
       }
-
       const activite = jours.map(jour => {
         const nbVisites = (visitesData || []).filter(v => v.created_at.startsWith(jour)).length
         const nbDemandes = (demandesData || []).filter(d => d.created_at.startsWith(jour)).length
@@ -71,6 +69,58 @@ function Admin() {
   async function handleLogout() {
     await supabase.auth.signOut()
     window.location.href = '/login'
+  }
+
+  function genererDevisPDF(demande) {
+    const doc = new jsPDF()
+    const dateStr = new Date(demande.created_at).toLocaleDateString('fr-FR')
+
+    doc.setFillColor(15, 23, 42)
+    doc.rect(0, 0, 210, 35, 'F')
+    doc.setTextColor(245, 158, 11)
+    doc.setFontSize(20)
+    doc.text('Le Doyen des Électriciens', 15, 20)
+    doc.setFontSize(10)
+    doc.setTextColor(255, 255, 255)
+    doc.text('Devis gratuit — Votre électricien de confiance', 15, 28)
+
+    doc.setTextColor(30, 30, 30)
+    doc.setFontSize(14)
+    doc.text('DEVIS', 15, 50)
+    doc.setFontSize(10)
+    doc.text(`Date : ${dateStr}`, 150, 50)
+
+    doc.setDrawColor(200, 200, 200)
+    doc.line(15, 55, 195, 55)
+
+    doc.setFontSize(11)
+    doc.text('Client :', 15, 65)
+    doc.setFontSize(10)
+    doc.text(`${demande.clients?.nom || ''}`, 15, 72)
+    doc.text(`Tél : ${demande.clients?.telephone || ''}`, 15, 78)
+
+    doc.setFontSize(11)
+    doc.text('Service demandé :', 15, 92)
+    doc.setFontSize(10)
+    doc.text(`${demande.service_demande || ''}`, 15, 99)
+
+    doc.setFontSize(11)
+    doc.text('Description du besoin :', 15, 113)
+    doc.setFontSize(10)
+    const descLines = doc.splitTextToSize(demande.description || 'Aucune description fournie', 180)
+    doc.text(descLines, 15, 120)
+
+    doc.setDrawColor(200, 200, 200)
+    doc.line(15, 150, 195, 150)
+    doc.setFontSize(10)
+    doc.setTextColor(100, 100, 100)
+    doc.text('Montant : à définir après visite technique sur site', 15, 158)
+
+    doc.setFontSize(9)
+    doc.setTextColor(150, 150, 150)
+    doc.text('Contact : +228 98 95 89 02  •  awessoupascal@gmail.com', 15, 280)
+
+    doc.save(`devis-${demande.clients?.nom || 'client'}-${dateStr}.pdf`)
   }
 
   const demandesFiltrees = demandes.filter(d => {
@@ -170,6 +220,7 @@ function Admin() {
               <div className="statut-actions">
                 <button onClick={() => updateStatut(d.id, 'vue')}>Marquer vue</button>
                 <button onClick={() => updateStatut(d.id, 'devis_envoye')}>Devis envoyé</button>
+                <button onClick={() => genererDevisPDF(d)}>📄 PDF</button>
               </div>
             </div>
           ))}
