@@ -532,3 +532,13 @@ body {
   font-size: 1rem;
   cursor: pointer;
 }
+
+.demande select {
+  background: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 8px;
+  padding: 14px;
+  color: #e2e8f0;
+  font-size: 1rem;
+  width: 100%;
+}

@@ -41,6 +41,9 @@ function Home() {
       }, '00y-w1SlxV9N0AEvh')
 
       setEnvoye(true)
+
+      const message = `Nouvelle demande:%0ANom: ${form.nom}%0ATelephone: ${form.telephone}%0AService: ${form.service_demande}%0ADescription: ${form.description}`
+      window.open(`https://wa.me/22898958902?text=${message}`, '_blank')
     }
   }
 
@@ -122,15 +125,21 @@ function Home() {
       <section className="demande" id="demande">
         <h2>Demander un service</h2>
         {envoye ? (
-          <p>Merci ! Votre demande a été envoyée, nous vous contactons rapidement.</p>
+          <p>Merci ! Votre demande a été envoyée. Confirmez l'envoi sur WhatsApp pour nous prévenir immédiatement.</p>
         ) : (
           <form onSubmit={handleSubmit}>
             <input type="text" placeholder="Votre nom" required
               value={form.nom} onChange={e => setForm({ ...form, nom: e.target.value })} />
             <input type="tel" placeholder="Votre téléphone" required
               value={form.telephone} onChange={e => setForm({ ...form, telephone: e.target.value })} />
-            <input type="text" placeholder="Service souhaité" required
-              value={form.service_demande} onChange={e => setForm({ ...form, service_demande: e.target.value })} />
+            <select required
+              value={form.service_demande}
+              onChange={e => setForm({ ...form, service_demande: e.target.value })}>
+              <option value="">Choisissez un service</option>
+              {services.map(s => (
+                <option key={s.id} value={s.nom}>{s.nom}</option>
+              ))}
+            </select>
             <textarea placeholder="Décrivez votre besoin"
               value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} />
             <button type="submit">Envoyer la demande</button>
