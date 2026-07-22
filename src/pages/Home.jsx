@@ -196,6 +196,11 @@ function Home() {
             <span className="contact-label">Email</span>
             <span className="contact-value">awessoupascal@gmail.com</span>
           </a>
+          <a href="https://www.tiktok.com/@ledoyendeselectro" target="_blank" rel="noopener noreferrer" className="contact-card">
+            <span className="contact-icon">🎵</span>
+            <span className="contact-label">TikTok</span>
+            <span className="contact-value">@ledoyendeselectro</span>
+          </a>
         </div>
       </section>
 
