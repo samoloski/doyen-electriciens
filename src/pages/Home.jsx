@@ -147,6 +147,23 @@ function Home() {
         )}
       </section>
 
+      <section className="contact" id="contact">
+        <h2>Nous contacter</h2>
+        <p className="contact-intro">Disponible 24h/24, 7j/7 pour vos urgences électriques</p>
+        <div className="contact-grid">
+          <a href="https://wa.me/22898958902" target="_blank" rel="noopener noreferrer" className="contact-card">
+            <span className="contact-icon">📱</span>
+            <span className="contact-label">WhatsApp</span>
+            <span className="contact-value">+228 98 95 89 02</span>
+          </a>
+          <a href="mailto:awessoupascal@gmail.com" className="contact-card">
+            <span className="contact-icon">✉️</span>
+            <span className="contact-label">Email</span>
+            <span className="contact-value">awessoupascal@gmail.com</span>
+          </a>
+        </div>
+      </section>
+
       <footer className="footer">
         <p>Le Doyen des Électriciens — Votre électricien de confiance</p>
       </footer>
